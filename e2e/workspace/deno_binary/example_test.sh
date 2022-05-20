@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-echo "$SCRIPT_LOCATION"
-cat "$SCRIPT_LOCATION"
-# DENO_DIR="$PWD/.deno"
-# mkdir -p "$DENO_DIR/cache/gen"
+set -e
 
-# $SCRIPT_LOCATION script_output.json
+# echo "$SCRIPT_LOCATION"
+# cat "$SCRIPT_LOCATION"
+export DENO_DIR="$PWD/.deno"
+mkdir -p "$DENO_DIR/cache/gen"
+echo "$DENO_DIR"
+
+$SCRIPT_LOCATION script_output.json
 
 # echo "Deno execution finished"
 
