@@ -12,11 +12,11 @@ def _deno_binary_impl(ctx):
     runtime_args = "%*" if is_windows else "$@"
 
     # Set DENO_DIR within build workspace
-    set_deno_dir = "setx DENO_DIR \".\" /m" if is_windows else "export DENO_DIR=\".\""
+    set_deno_dir = "setx DENO_DIR \"%CD%\\.deno\" /m" if is_windows else "export DENO_DIR=\"$$PWD/.deno\""
 
     ctx.actions.write(
         output = outfile,
-        content = "{set_deno_dir}\nexport DENO_DIR=\"$$PWD/.deno\"; {deno_path} run {flags} {main_file} {runtime_args}".format(
+        content = "{set_deno_dir} \n{deno_path} run {flags} {main_file} {runtime_args}".format(
             set_deno_dir = set_deno_dir,
             deno_path = deno.denoinfo.tool_files[0].short_path,
             main_file = ctx.file.main.path,
