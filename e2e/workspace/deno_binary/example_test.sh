@@ -2,7 +2,7 @@
 set -e
 
 export DENO_DIR="$PWD/.deno"
-mkdir -p "$DENO_DIR/cache/gen"
+mkdir -p "$DENO_DIR"
 
 $SCRIPT_LOCATION script_output.json
 
