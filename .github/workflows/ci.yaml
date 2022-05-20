@@ -46,6 +46,7 @@ jobs:
           key: bazel-cache-${{ hashFiles('**/BUILD.bazel', '**/*.bzl', 'WORKSPACE') }}
           restore-keys: bazel-cache-
       - run: |
+          mkdir -p ~/.cache/bazel-repo/deno/gen
           mkdir -p ~/.cache/deno/gen
           chmod -R 777 ~/.cache/deno
       - name: bazel test //...
@@ -54,4 +55,4 @@ jobs:
           XDG_CACHE_HOME: ~/.cache/bazel-repo
         working-directory: ${{ matrix.folder }}
         run: |
-          bazel --bazelrc=$GITHUB_WORKSPACE/.github/workflows/ci.bazelrc --bazelrc=.bazelrc test //...
+          bazel --bazelrc=$GITHUB_WORKSPACE/.github/workflows/ci.bazelrc --bazelrc=.bazelrc --test_env DENO_DIR=~/.cache/bazel-repo/deno test //...
