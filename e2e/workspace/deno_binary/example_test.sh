@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+DENO_DIR="$(dirname $SCRIPT_LOCATION)/.deno"
+mkdir -p "$DENO_DIR/cache/gen"
+
 $SCRIPT_LOCATION script_output.json
 
 echo "Deno execution finished"
