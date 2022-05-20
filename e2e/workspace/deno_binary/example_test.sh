@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -e
+
+ls
+# set -e
 
 $SCRIPT_LOCATION script_output.json
 
