@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-export DENO_DIR="$PWD/.deno"
-mkdir -p "$DENO_DIR"
-
 $SCRIPT_LOCATION script_output.json
 
 echo "Deno execution finished"

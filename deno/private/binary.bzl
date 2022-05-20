@@ -13,7 +13,7 @@ def _deno_binary_impl(ctx):
 
     ctx.actions.write(
         output = outfile,
-        content = "{deno_path} run {flags} {main_file} {runtime_args}".format(
+        content = "export DENO_DIR=\"$$PWD/.deno\"; {deno_path} run {flags} {main_file} {runtime_args}".format(
             deno_path = deno.denoinfo.tool_files[0].short_path,
             main_file = ctx.file.main.path,
             flags = flags,
