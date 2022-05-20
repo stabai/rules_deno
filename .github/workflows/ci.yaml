@@ -46,7 +46,7 @@ jobs:
           key: bazel-cache-${{ hashFiles('**/BUILD.bazel', '**/*.bzl', 'WORKSPACE') }}
           restore-keys: bazel-cache-
       - run: |
-          mkdir -p ~/.cache/bazel-repo/deno/gen
+          mkdir -p ~/.cache/bazel-repo/deno/gen/file/home/runner/.cache/bazel/_bazel_runner
           mkdir -p ~/.cache/deno/gen
           chmod -R 777 ~/.cache/deno
       - name: bazel test //...
