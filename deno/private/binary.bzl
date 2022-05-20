@@ -1,23 +1,39 @@
 def _deno_binary_impl(ctx):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
 
+    if is_windows:
+        script_extension = ".bat"
+        leftover_args = "%*"
+        export_cmd = "set"
+        path_separator = "\\"
+    else:
+        script_extension = ".sh"
+        leftover_args = "$@"
+        export_cmd = "export"
+        path_separator = "/"
+
     # Declare output file for launcher script on selected platform
     outfile_name = ctx.attr.name
-    outfile_name += ".bat" if is_windows else ".sh"
+    outfile_name += script_extension
     outfile = ctx.actions.declare_file(outfile_name)
 
     # Get Deno executable and build flags to include in launcher
     deno = ctx.toolchains["@contrib_rules_deno//deno:toolchain_type"]
     flags = _build_deno_flags(unstable_apis = ctx.attr.unstable_apis, allow = ctx.attr.allow)
-    runtime_args = "%*" if is_windows else "$@"
+    runtime_args = leftover_args
 
-    # Set DENO_DIR within build workspace
-    set_deno_dir = "set DENO_DIR=\"%CD%\\.deno\" /m" if is_windows else "export DENO_DIR=\"$$PWD/.deno\""
+    # Set DENO_DIR within build bin
+    deno_dir = ctx.bin_dir.path + path_separator
+    deno_dir += "%s_deno_dir" % ctx.attr.name
 
     ctx.actions.write(
         output = outfile,
-        content = "{set_deno_dir} \n{deno_path} run {flags} {main_file} {runtime_args}".format(
-            set_deno_dir = set_deno_dir,
+        content = """
+        {export_cmd} DENO_DIR="{deno_dir}"
+        {deno_path} run {flags} {main_file} {runtime_args}
+        """.format(
+            deno_dir = deno_dir,
+            export_cmd = export_cmd,
             deno_path = deno.denoinfo.tool_files[0].short_path,
             main_file = ctx.file.main.path,
             flags = flags,
