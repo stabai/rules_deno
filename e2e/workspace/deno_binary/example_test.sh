@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-DENO_DIR="$(dirname $SCRIPT_LOCATION)/.deno"
+DENO_DIR="$PWD/.deno"
 mkdir -p "$DENO_DIR/cache/gen"
 
 $SCRIPT_LOCATION script_output.json
